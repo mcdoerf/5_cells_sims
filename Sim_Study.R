@@ -66,7 +66,7 @@ sd<-sd(MLEs[,1])  ##Empirical standard deviation
 se<-mean(MLEs[,2]) ##Mean of Lin's FPC corrected standard error estimates.
 
 
-paste("Empirical standard deviation =", sd, "FPC Corrected standard deviation=", se)
+paste("Empirical standard deviation =", sd, "FPC Corrected standard error=", se)
 
 }
 
