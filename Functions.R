@@ -56,6 +56,8 @@ return(c(n1, n2, n3, n4, n5, n6, n7))
 }
 
 
+
+
 ####MLEs based on 5 cell count table.
 ###Data consists of (n1+n5, n2, n4, n6, n3+n7)
 ###N_MLE_SE is Lin's estimated standard error with FPC corrections for the 5 cell case.
@@ -72,21 +74,18 @@ n6<-data[6]
 n37<-data[3]+data[7]
 
 
-#If a cell count is 0, I set it to 1 to avoid division by 0 problems when calculating the FPC corrected standard error.
-
+##If one of these cell counts is 0, I set it to be 1 to avoid dividsion by 0 problems later.
 if (n15==0){
   n15=1
 }
 
 if (n2==0){
-  n2=1
+  n2==1
 }
 
-
-if (n4==0){
+if(n4==0){
   n4=1
 }
-
 
 if (n6==0){
   n6=1
@@ -96,9 +95,6 @@ if (n6==0){
 if (n37==0){
   n37=1
 }
-
-
-
 
 
 n11 = n2; n10 = n4; n01 = n6
@@ -125,9 +121,12 @@ var_part2 = (n01*(N_MLE-nc)*n01/psi_star)/((N_MLE-n11-n10)*Ntot^2*psi_star) *0.5
 
 N_MLE_se = Ntot*sqrt(var_part1 + var_part2) # variance approximation
 
+z<-qnorm(0.975, mean=0, sd=1)
+
+CI<-c(N_MLE-z*N_MLE_se, N_MLE+z*N_MLE_se)
 
 
-return(c(mle = N_MLE, mle_se = N_MLE_se))
+return(c(mle = N_MLE, mle_se = N_MLE_se, Wald_CI=CI))
 }
 
 
@@ -160,10 +159,12 @@ sim_study<-function(nsims, population, p1_symp, p1_nonsymp, p2){
   N_hat<-mean(MLEs[,1]) #The mean of the MLE estimates
   sd<-sd(MLEs[,1])  ##Empirical standard deviation
   se<-mean(MLEs[,2]) ##Mean of Lin's FPC corrected standard error estimates.
+  coverage<-sum(MLEs[,3]<=sum(population$flu) & sum(population$flu)<=MLEs[,4])/nsims
+  
   
   
   paste("Number of Flue Patients", sum(population$flu), "Mean Estimated Number of Flu Cases", N_hat, "Empirical standard deviation ="
-        , sd, "FPC Corrected standard error=", se)
+        , sd, "FPC Corrected standard error=", se, "Wald Coverage=", coverage)
   
 }
 
