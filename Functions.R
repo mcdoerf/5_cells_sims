@@ -73,4 +73,3 @@ return(c(mle = N_MLE, mle_se = N_MLE_se))
 }
 
 
-MLE_5(simulate_data(population, p1_symp, p1_nonsymp, p2))
