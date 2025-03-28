@@ -115,9 +115,15 @@ pi_all = theta + (n6/psi_star)/Ntot
 
 N_MLE = Ntot*pi_all
 
-var_part1 = (n11*n10)/((n11+n10)*Ntot*psi_star)*theta *0.5/(n11-0.5)
+var_part1 = (n11*n10)/((n11+n10)*Ntot*psi_star)*theta *(1-pi_all)/(n11-pi_all)
+##in var_part1, replaced 0.5/(n11-0.5) => (1-pi_all)/(n11-pi_all); This should help address undercoverage.
+##The variance used for the simulation results on 3/27/25 is commented below (resulted in undercoverage in low prevalence situations).
+##var_part1=(n11*n10)/((n11+n10)*Ntot*psi_star)*theta *0.5/(n11-0.5)
 
-var_part2 = (n01*(N_MLE-nc)*n01/psi_star)/((N_MLE-n11-n10)*Ntot^2*psi_star) *0.5/(n01-0.5)
+var_part2 = (n01*(N_MLE-nc)*n01/psi_star)/((N_MLE-n11-n10)*Ntot^2*psi_star) *(1-pi_all)/(n01-pi_all)
+##in var_part2, repalced 0.5/(n01-0.5) => (1-pi_all)/(n01-pi_all); This should help address undercoverage.
+##The variance used for the simulation results on 3/27/25 is commented below.
+##var_part2 = (n01*(N_MLE-nc)*n01/psi_star)/((N_MLE-n11-n10)*Ntot^2*psi_star) *0.5/(n01-0.5)
 
 N_MLE_se = Ntot*sqrt(var_part1 + var_part2) # variance approximation
 
