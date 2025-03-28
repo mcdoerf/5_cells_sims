@@ -74,7 +74,7 @@ n6<-data[6]
 n37<-data[3]+data[7]
 
 
-##If one of these cell counts is 0, I set it to be 1 to avoid dividsion by 0 problems later.
+##If one of these cell counts is 0, I set it to be 1 to avoid division by 0 problems later.
 if (n15==0){
   n15=1
 }
@@ -157,13 +157,14 @@ sim_study<-function(nsims, population, p1_symp, p1_nonsymp, p2){
   ##Let's compare the empirical standard deviation of the MLE estimates to the mean of Lin's FPC corrected standard error estimates.
   
   N_hat<-mean(MLEs[,1]) #The mean of the MLE estimates
+  bias<-N_hat-sum(population$flu)
   sd<-sd(MLEs[,1])  ##Empirical standard deviation
   se<-mean(MLEs[,2]) ##Mean of Lin's FPC corrected standard error estimates.
   coverage<-sum(MLEs[,3]<=sum(population$flu) & sum(population$flu)<=MLEs[,4])/nsims
   
   
   
-  paste("Number of Flue Patients", sum(population$flu), "Mean Estimated Number of Flu Cases", N_hat, "Empirical standard deviation ="
+  paste("Number of Flue Patients", sum(population$flu), "Mean Estimated Number of Flu Cases", N_hat, "Bias", bias,  "Empirical standard deviation ="
         , sd, "FPC Corrected standard error=", se, "Wald Coverage=", coverage)
   
 }
